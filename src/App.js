@@ -1,12 +1,27 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import axios from 'axios';
+import { response } from "express";
 
 function App() {
 
   const [color, setColor] = useState('#fff');
 
+  const [colorList, setColorList] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:5000/colors')
+      .then((response) => setColorList(response.data))
+      .catch((error) => console.error('Не загрузились цвета: ', error));
+  });
+
   const generateColor = () => {
     const randomColor = `#${Math.floor(Math.random() * 16999999).toString(16)}`;
     setColor(randomColor);
+
+
+    axios.get('http://localhost:5000/colors')
+      .then((response) => setColorList(response.data))
+      .catch((error) => console.error('Не загрузились цвета: ', error));
+
   }
 
 
